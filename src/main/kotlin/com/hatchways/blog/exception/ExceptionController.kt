@@ -4,8 +4,8 @@ import com.hatchways.blog.schema.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.AuthenticationException
-import org.springframework.validation.ObjectError
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
@@ -49,6 +49,11 @@ class ExceptionController {
             ErrorResponse(sb.toString().trimEnd(';')),
             HttpStatus.BAD_REQUEST
         )
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun handleMissingRequiredQueryParameter(exception: MissingServletRequestParameterException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity(ErrorResponse("Invalid query parameters"), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(RuntimeException::class)

@@ -10,4 +10,7 @@ interface UserRepository : JpaRepository<User, Long> {
 
     @Query("SELECT u from User as u where u._username = :username")
     fun findByUsername(username: String): User
+
+    @Query("SELECT u from User as u where u.id IN (:userIds)")
+    fun findByUserId(userIds: List<Long>): List<User>
 }
